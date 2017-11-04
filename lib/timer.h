@@ -3,7 +3,7 @@
 #include "lib/common.h"
 
 #define TIMER_1 1
-#define TIMER_1 3
+#define TIMER_2 3
 
 #define TIMER_ONCE 0
 #define TIMER_PERIODIC 1

@@ -1,16 +1,17 @@
-#include "lib/timer.h"
+#include "lib/aux.h"
 #include "lib/gpio.h"
+#include "lib/timer.h"
 
-int notmain ( void )
-{
-    gpio_configure(12, GPIO_OUTPUT);
+int notmain(void) {
+  aux_mu_init();
 
-    while(1)
-    {
-        gpio_clear(12);
-        
-        gpio_set(12);
-    }
+  aux_mu_send_string("Hello, world!\r\n");
+  aux_mu_flush();
 
-    return(0);
+  while (1) {
+      aux_mu_send(aux_mu_receive());
+      aux_mu_flush();
+  }
+
+  return 0;
 }

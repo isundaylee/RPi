@@ -37,7 +37,7 @@ volatile GPIO *gpio = (GPIO *) GPIO_BASE;
 void gpio_configure(int pin, int type) {
     dmb();
     int sel = gpio->fsel[pin / 10];
-    sel &= 0b111 << (3 * (pin % 10));
+    sel &= ~(0b111 << (3 * (pin % 10)));
     sel |= type << (3 * (pin % 10));
     gpio->fsel[pin / 10] = sel;
     dmb();
