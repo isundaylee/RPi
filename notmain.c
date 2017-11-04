@@ -1,3 +1,5 @@
+#include "lib/timer.h"
+
 extern void PUT32 ( unsigned int, unsigned int );
 extern unsigned int GET32 ( unsigned int );
 extern void dummy ( unsigned int );
@@ -14,6 +16,8 @@ extern void dummy ( unsigned int );
 int notmain ( void )
 {
     unsigned int ra;
+
+    timer_init();
 
     ra=GET32(GPFSEL1);
     ra&=~(7<<6);

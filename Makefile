@@ -1,14 +1,25 @@
+################################################################################
+# Options
+################################################################################
 
-ARMGNU ?= arm-none-eabi
-#ARMGNU ?= arm-linux-gnueabi
+TOOLCHAIN ?= arm-none-eabi
 
 AOPS = --warn --fatal-warnings
 COPS = -Wall -Werror -O2 -nostdlib -nostartfiles -ffreestanding
 
-all : kernel.img
+################################################################################
+# Source files
+################################################################################
 
-copy : kernel.img
-	pbcopy < notmain.srec
+C_SRCS = $(wildcard *.c) $(wildcard lib/*.c)
+C_OBJS = $(C_SRCS:%.c=%.o)
+C_HDRS = $(wildcard *.h) $(wildcard lib/*.h)
+
+################################################################################
+# Rules
+################################################################################
+
+all : kernel.img
 
 clean :
 	rm -f *.o
@@ -20,15 +31,22 @@ clean :
 	rm -f *.img
 
 vectors.o : vectors.s
-	$(ARMGNU)-as $(AOPS) vectors.s -o vectors.o
+	$(TOOLCHAIN)-as $(AOPS) vectors.s -o vectors.o
 
-notmain.o : notmain.c
-	$(ARMGNU)-gcc $(COPS) -c notmain.c -o notmain.o
+%.o: %.c $(C_HDRS)
+	$(TOOLCHAIN)-gcc $(COPS) -c $< -o $@
 
-notmain.elf : memmap vectors.o notmain.o
-	$(ARMGNU)-ld vectors.o notmain.o -T memmap -o notmain.elf
-	$(ARMGNU)-objdump -D notmain.elf > notmain.list
+notmain.elf : memmap vectors.o $(C_OBJS)
+	$(TOOLCHAIN)-ld vectors.o $(C_OBJS) -T memmap -o notmain.elf
+	$(TOOLCHAIN)-objdump -D notmain.elf > notmain.list
 
 kernel.img : notmain.elf
-	$(ARMGNU)-objcopy --srec-forceS3 notmain.elf -O srec notmain.srec
-	$(ARMGNU)-objcopy notmain.elf -O binary kernel.img
+	$(TOOLCHAIN)-objcopy --srec-forceS3 notmain.elf -O srec notmain.srec
+	$(TOOLCHAIN)-objcopy notmain.elf -O binary kernel.img
+
+################################################################################
+# Utility rules
+################################################################################
+
+copy : kernel.img
+	pbcopy < notmain.srec
