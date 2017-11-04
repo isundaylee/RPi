@@ -5,7 +5,7 @@
 TOOLCHAIN ?= arm-none-eabi
 
 AOPS = --warn --fatal-warnings
-COPS = -Wall -Werror -O2 -nostdlib -nostartfiles -ffreestanding
+COPS = -Wall -Werror -O2 -nostdlib -nostartfiles -ffreestanding -I.
 
 ################################################################################
 # Source files
