@@ -35,7 +35,7 @@ void aux_mu_init() {
   aux->mu_mcr_reg = 0;
   aux->mu_ier_reg = 0;
   aux->mu_iir_reg = 0xc6;
-  aux->mu_baud_reg = 270;       // Baud rate: 115200
+  aux->mu_baud_reg = 270; // Baud rate: 115200
 
   gpio_configure(14, GPIO_ALT_5);
   gpio_configure(15, GPIO_ALT_5);
@@ -60,6 +60,28 @@ void aux_mu_send_string(char *str) {
     aux_mu_send(c);
   }
 }
+
+void aux_mu_send_uint(unsigned int a) {
+  if (a == 0) {
+    return;
+  }
+
+  aux_mu_send_uint(a / 10);
+  aux_mu_send('0' + (a % 10));
+}
+
+void aux_mu_send_int(int a) {
+  if (a < 0) {
+    aux_mu_send('-');
+    aux_mu_send_uint(-a);
+  } else if (a == 0) {
+    aux_mu_send('0');
+  } else {
+    aux_mu_send_uint(a);
+  }
+}
+
+void aux_mu_send_newline() { aux_mu_send_string("\r\n"); }
 
 char aux_mu_receive() {
   dmb();

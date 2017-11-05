@@ -1,8 +1,8 @@
 #pragma once
 
-typedef unsigned int mem_t;
+#include <stdint.h>
 
-typedef int uint32_t;
+typedef unsigned int mem_t;
 
 #define PERIPHERAL_BASE 0x20000000
 

@@ -22,6 +22,11 @@ int notmain(void) {
     case '1':
       gpio_clear(PIN_LED);
       break;
+    case 't':
+      aux_mu_send_int(timer_get());
+      aux_mu_send_newline();
+      aux_mu_flush();
+      break;
     }
   }
 

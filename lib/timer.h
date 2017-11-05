@@ -11,4 +11,6 @@
 #define TIMER_BASE (PERIPHERAL_BASE + 0x00003000)
 
 void timer_init();
+
+uint32_t timer_get();
 void timer_set(int timer, int us, int type);
