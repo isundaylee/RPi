@@ -62,11 +62,10 @@ void aux_mu_send_string(char *str) {
 }
 
 void aux_mu_send_uint(unsigned int a) {
-  if (a == 0) {
-    return;
+  if (a >= 10) {
+    aux_mu_send_uint(a / 10);
   }
 
-  aux_mu_send_uint(a / 10);
   aux_mu_send('0' + (a % 10));
 }
 
