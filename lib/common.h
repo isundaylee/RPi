@@ -36,4 +36,4 @@ inline void assert(int condition) {
   do {                                                                         \
   } while (!(cond))
 
-#define BIT(n) (1 << (n))
+#define BIT(n) (uint32_t) (((uint32_t) 1) << (n))
